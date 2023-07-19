@@ -1,5 +1,5 @@
 <template>
-  <h1>ezEE Uploader</h1>
+  <h1>Extension Engine 2023 Uploader</h1>
 </template>
 
 <script lang="ts">
