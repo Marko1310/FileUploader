@@ -2,11 +2,9 @@
 import { Router } from "express";
 const router = Router();
 
-//multer middleware
-import multerMiddleware from "../middleware/multerMiddleware";
-
 // controller
 import uploadController from "../controllers/uploadController";
+import multerMiddleware from "../middleware/multerMiddleware";
 
 // Routes
 
@@ -15,7 +13,7 @@ import uploadController from "../controllers/uploadController";
 // @access  Public
 router.post(
   "/upload",
-  multerMiddleware.upload.single("file"),
+  multerMiddleware.single("file"),
   uploadController.uploadFile
 );
 

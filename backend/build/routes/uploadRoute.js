@@ -6,13 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // Express router
 const express_1 = require("express");
 const router = (0, express_1.Router)();
-//multer middleware
-const multerMiddleware_1 = __importDefault(require("../middleware/multerMiddleware"));
 // controller
 const uploadController_1 = __importDefault(require("../controllers/uploadController"));
+const multerMiddleware_1 = __importDefault(require("../middleware/multerMiddleware"));
 // Routes
 // @route   POST /api/post
 // @desc    Post a file
 // @access  Public
-router.post("/upload", multerMiddleware_1.default.upload.single("file"), uploadController_1.default.uploadFile);
+router.post("/upload", multerMiddleware_1.default.single("file"), uploadController_1.default.uploadFile);
 exports.default = router;

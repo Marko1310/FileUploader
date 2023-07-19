@@ -1,3 +1,7 @@
+require("dotenv").config();
+//file system
+import fs from "fs";
+//aws s3
 import S3 from "aws-sdk/clients/s3";
 
 const bucketName = process.env.AWS_BUCKET_NAME;
@@ -15,15 +19,15 @@ const s3 = new S3({
   secretAccessKey,
 });
 
-const uploadFile = function (file: Express.Multer.File) {
+const uploadFileToAws = function (file: Express.Multer.File) {
+  const fileStream = fs.createReadStream(file.path);
   const uploadParams = {
     Bucket: bucketName,
+    Body: fileStream,
     Key: file.originalname,
-    Body: file.buffer,
-    ContentType: file.mimetype,
   };
 
   return s3.upload(uploadParams).promise();
 };
 
-export default { uploadFile };
+export default uploadFileToAws;

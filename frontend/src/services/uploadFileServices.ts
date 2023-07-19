@@ -7,7 +7,7 @@ const postFile = async function (formData: FormData) {
         'Content-Type': 'multipart/form-data'
       }
     })
-    console.log('File uploaded successfully:', response?.data?.filename)
+    console.log('File uploaded succesfully:', response?.data?.filename)
     return response.data
   } catch (err) {
     console.log(err)
