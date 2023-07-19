@@ -1,0 +1,15 @@
+@import './base.css';
+
+#app {
+  margin: 0 auto;
+  padding: 2rem;
+  font-weight: normal;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body {
+  display: flex;
+  background: #eee;
+}
