@@ -8,10 +8,15 @@ const express_1 = require("express");
 const router = (0, express_1.Router)();
 // controller
 const uploadController_1 = __importDefault(require("../controllers/uploadController"));
+//middleware
 const multerMiddleware_1 = __importDefault(require("../middleware/multerMiddleware"));
 // Routes
-// @route   POST /api/post
-// @desc    Post a file
+// @route   POST /api/uploadtoserver
+// @desc    Post a file to server
 // @access  Public
-router.post("/upload", multerMiddleware_1.default.single("file"), uploadController_1.default.uploadFile);
+router.post("/uploadtoserver", multerMiddleware_1.default.storeFileLocally.single("file"), uploadController_1.default.uploadFileToServer);
+// @route   POST /api/uploadtoaws
+// @desc    Post a file to aws
+// @access  Public
+router.post("/uploadtoaws", multerMiddleware_1.default.attachFileToReq.single("file"), uploadController_1.default.uploadFileToAWS);
 exports.default = router;

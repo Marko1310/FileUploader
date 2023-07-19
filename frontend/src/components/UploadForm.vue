@@ -1,10 +1,13 @@
 <template>
-  <form @submit.prevent="handleFileUpload">
+  <form @submit.prevent>
     <label>Select file</label>
     <input type="file" name="file" required @change="selectFile" />
 
     <div class="submit">
-      <button>Upload File</button>
+      <button @click="handleFileUploadToServer">Upload File to Server</button>
+    </div>
+    <div class="submit">
+      <button @click="handleFileUploadToAWS">Upload File to AWS</button>
     </div>
   </form>
 </template>
@@ -27,14 +30,23 @@ export default {
         this.file = inputElement.files[0]
       }
     },
-    handleFileUpload(): void {
+    handleFileUploadToServer(): void {
       if (!this.file) {
         return
       }
       const formData = new FormData()
       formData.append('file', this.file)
 
-      uploadFileServices.postFile(formData)
+      uploadFileServices.postFileToServer(formData)
+    },
+    handleFileUploadToAWS(): void {
+      if (!this.file) {
+        return
+      }
+      const formData = new FormData()
+      formData.append('file', this.file)
+
+      uploadFileServices.postFileToAWS(formData)
     }
   }
 }

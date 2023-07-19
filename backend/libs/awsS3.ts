@@ -1,6 +1,5 @@
 require("dotenv").config();
-//file system
-import fs from "fs";
+
 //aws s3
 import S3 from "aws-sdk/clients/s3";
 
@@ -19,15 +18,14 @@ const s3 = new S3({
   secretAccessKey,
 });
 
-const uploadFileToAws = function (file: Express.Multer.File) {
-  const fileStream = fs.createReadStream(file.path);
+const fileToAWS = function (file: Express.Multer.File) {
   const uploadParams = {
     Bucket: bucketName,
-    Body: fileStream,
+    Body: file.buffer,
     Key: file.originalname,
   };
 
   return s3.upload(uploadParams).promise();
 };
 
-export default uploadFileToAws;
+export default fileToAWS;

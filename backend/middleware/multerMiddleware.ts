@@ -13,6 +13,9 @@ const storage = multer.diskStorage({
     cb(null, filename);
   },
 });
-const upload = multer({ storage });
 
-export default upload;
+const storeFileLocally = multer({ storage });
+
+const attachFileToReq = multer({ storage: multer.memoryStorage() });
+
+export default { storeFileLocally, attachFileToReq };
