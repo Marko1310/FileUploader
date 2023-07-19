@@ -3,19 +3,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// aws S3
-const awsS3_1 = __importDefault(require("../libs/awsS3"));
+// services
+const awsServices_1 = __importDefault(require("../services/awsServices"));
+const appErrorServices_1 = __importDefault(require("../services/appErrorServices"));
 const uploadFileToServer = async (req, res, next) => {
-    if (!req.file) {
-        return res.status(400).json({ error: "No file uploaded." });
+    try {
+        if (!req.file) {
+            throw new appErrorServices_1.default("No file uploaded to server.", 400);
+        }
+        return res
+            .status(201)
+            .json(`File ${req.file.originalname} has been succesfully uploaded to the server`);
     }
-    return res.status(201).json(req.file);
+    catch (err) {
+        return next(err);
+    }
 };
 const uploadFileToAWS = async (req, res, next) => {
-    if (!req.file) {
-        return res.status(400).json({ error: "No file uploaded." });
+    try {
+        if (!req.file) {
+            throw new appErrorServices_1.default("No file uploaded to AWS.", 400);
+        }
+        await (0, awsServices_1.default)(req.file);
+        return res
+            .status(201)
+            .json(`File ${req.file.originalname} has been succesfully uploaded to AWS`);
     }
-    const result = await (0, awsS3_1.default)(req.file);
-    return res.status(201).json(req.file);
+    catch (err) {
+        return next(err);
+    }
 };
 exports.default = { uploadFileToServer, uploadFileToAWS };

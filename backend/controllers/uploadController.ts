@@ -1,18 +1,27 @@
 // Express Router
 import { Request, Response, NextFunction } from "express";
 
-// aws S3
-import fileToAWS from "../libs/awsS3";
+// services
+import fileToAWS from "../services/awsServices";
+import AppError from "../services/appErrorServices";
 
 const uploadFileToServer = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  if (!req.file) {
-    return res.status(400).json({ error: "No file uploaded." });
+  try {
+    if (!req.file) {
+      throw new AppError("No file uploaded to server.", 400);
+    }
+    return res
+      .status(201)
+      .json(
+        `File ${req.file.originalname} has been succesfully uploaded to the server`
+      );
+  } catch (err) {
+    return next(err);
   }
-  return res.status(201).json(req.file);
 };
 
 const uploadFileToAWS = async (
@@ -20,11 +29,19 @@ const uploadFileToAWS = async (
   res: Response,
   next: NextFunction
 ) => {
-  if (!req.file) {
-    return res.status(400).json({ error: "No file uploaded." });
+  try {
+    if (!req.file) {
+      throw new AppError("No file uploaded to AWS.", 400);
+    }
+    await fileToAWS(req.file);
+    return res
+      .status(201)
+      .json(
+        `File ${req.file.originalname} has been succesfully uploaded to AWS`
+      );
+  } catch (err) {
+    return next(err);
   }
-  const result = await fileToAWS(req.file);
-  return res.status(201).json(req.file);
 };
 
 export default { uploadFileToServer, uploadFileToAWS };
