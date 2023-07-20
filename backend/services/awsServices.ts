@@ -1,5 +1,6 @@
 import s3 from "../libs/awsS3";
 import AppError from "../services/appErrorServices";
+import { v4 as uuidv4 } from "uuid";
 
 const bucketName = process.env.AWS_BUCKET_NAME;
 
