@@ -7,7 +7,7 @@
       <button @click="handleFileUploadToServer">Upload File to Server</button>
     </div>
     <div class="submit">
-      <button @click="handleFileUploadToAWS">Upload File to AWS</button>
+      <button @click="handleFileUploadDirectlyToAWS">Upload File to AWS</button>
     </div>
   </form>
 </template>
@@ -47,6 +47,14 @@ export default {
       formData.append('file', this.file)
 
       uploadFileServices.postFileToAWS(formData)
+    },
+    handleFileUploadDirectlyToAWS(): void {
+      if (!this.file) {
+        return
+      }
+      // const formData = new FormData()
+      // formData.append('file', this.file)
+      uploadFileServices.postFileDirectlyToAWS(this.file)
     }
   }
 }

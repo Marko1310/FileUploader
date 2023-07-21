@@ -1,6 +1,8 @@
-import s3 from "../libs/awsS3";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import s3Client from "../libs/awsS3";
 import AppError from "../services/appErrorServices";
-import { v4 as uuidv4 } from "uuid";
+import { Upload } from "@aws-sdk/lib-storage";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const bucketName = process.env.AWS_BUCKET_NAME;
 
@@ -18,11 +20,23 @@ const fileToAWS = async function (file: Express.Multer.File) {
     Key: file.originalname,
   };
 
-  try {
-    await s3.upload(uploadParams).promise();
-  } catch (err) {
-    throw new AppError("Error uploading file to AWS", 400);
-  }
+  const uploader = new Upload({
+    client: s3Client,
+    params: uploadParams,
+  });
+
+  return await uploader.done();
 };
 
-export default fileToAWS;
+const presignedUrl = async () => {
+  console.log("HERE");
+  const command = new PutObjectCommand({
+    Bucket: "mcabo",
+    Key: "test.jpeg",
+  });
+  return getSignedUrl(s3Client, command, {
+    expiresIn: 6000,
+  });
+};
+
+export default { fileToAWS, presignedUrl };

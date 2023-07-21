@@ -2,7 +2,7 @@
 import { Request, Response, NextFunction } from "express";
 
 // services
-import fileToAWS from "../services/awsServices";
+import awsServices from "../services/awsServices";
 import AppError from "../services/appErrorServices";
 
 const uploadFileToServer = async (
@@ -33,7 +33,7 @@ const uploadFileToAWS = async (
     if (!req.file) {
       throw new AppError("No file uploaded to AWS.", 400);
     }
-    await fileToAWS(req.file);
+    await awsServices.fileToAWS(req.file);
     return res
       .status(201)
       .json(

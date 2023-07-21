@@ -24,7 +24,7 @@ const uploadFileToAWS = async (req, res, next) => {
         if (!req.file) {
             throw new appErrorServices_1.default("No file uploaded to AWS.", 400);
         }
-        await (0, awsServices_1.default)(req.file);
+        await awsServices_1.default.fileToAWS(req.file);
         return res
             .status(201)
             .json(`File ${req.file.originalname} has been succesfully uploaded to AWS`);

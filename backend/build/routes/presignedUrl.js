@@ -12,5 +12,7 @@ const signedUrlController_1 = __importDefault(require("../controllers/signedUrlC
 // @route   GET /api/requestpresignedurl
 // @desc    Get a presigned url
 // @access  Public
-router.get("/requestpresignedurl", signedUrlController_1.default);
+router.get("/requestpresignedurl", 
+// multerMiddleware.attachFileToReq.single("file"),
+signedUrlController_1.default);
 exports.default = router;

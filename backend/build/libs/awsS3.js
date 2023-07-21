@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 require("dotenv").config();
 //aws s3
-const s3_1 = __importDefault(require("aws-sdk/clients/s3"));
+const client_s3_1 = require("@aws-sdk/client-s3");
 const appErrorServices_1 = __importDefault(require("../services/appErrorServices"));
 const bucketName = process.env.AWS_BUCKET_NAME;
 const region = process.env.AWS_BUCKET_REGION;
@@ -14,9 +14,11 @@ const secretAccessKey = process.env.AWS_SECRET_KEY;
 if (!bucketName || !region || !accessKeyId || !secretAccessKey) {
     throw new appErrorServices_1.default("Missing AWS credentials. Check your environment variables.", 400);
 }
-const s3 = new s3_1.default({
+const s3Client = new client_s3_1.S3Client({
     region,
-    accessKeyId,
-    secretAccessKey,
+    credentials: {
+        accessKeyId: accessKeyId,
+        secretAccessKey: secretAccessKey,
+    },
 });
-exports.default = s3;
+exports.default = s3Client;

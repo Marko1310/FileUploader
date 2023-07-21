@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 //aws s3
-import S3 from "aws-sdk/clients/s3";
+import { S3Client } from "@aws-sdk/client-s3";
 
 import AppError from "../services/appErrorServices";
 
@@ -17,10 +17,12 @@ if (!bucketName || !region || !accessKeyId || !secretAccessKey) {
   );
 }
 
-const s3 = new S3({
+const s3Client = new S3Client({
   region,
-  accessKeyId,
-  secretAccessKey,
+  credentials: {
+    accessKeyId: accessKeyId,
+    secretAccessKey: secretAccessKey,
+  },
 });
 
-export default s3;
+export default s3Client;

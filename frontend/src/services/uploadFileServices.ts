@@ -28,7 +28,25 @@ const postFileToAWS = async function (formData: FormData) {
   }
 }
 
+const postFileDirectlyToAWS = async function (file: File) {
+  try {
+    const response = await axios.get('http://localhost:8000/api/requestpresignedurl')
+    console.log(response)
+    axios
+      .put(response.data.urll, file)
+      .then((response) => {
+        console.log('File uploaded successfully!')
+      })
+      .catch((error) => {
+        console.error('Error uploading file:', error)
+      })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export default {
   postFileToServer,
-  postFileToAWS
+  postFileToAWS,
+  postFileDirectlyToAWS
 }
